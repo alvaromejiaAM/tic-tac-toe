@@ -29,22 +29,8 @@ html{
   justify-content: center;
 }
 
-.box1,
-.box2,
-.box3,
-.box4,
-.box5,
-.box6{
-  border-bottom: 3px solid;
-}
-
-.box2,
-.box5,
-.box8,
-.box3,
-.box6,
-.box9{
-  border-left: 3px solid;
+.game > button{
+  height: 200px;
 }
 
 .box{
