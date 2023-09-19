@@ -13,8 +13,7 @@ const gameBoard = (() =>{
     array[i] = 0;
     container.appendChild(box);
   }
-
-  return{array};
+  return array;
 
 })();
 
@@ -24,14 +23,19 @@ const displayController = (() =>{
   const player2 = createPlayers('player2', 'o', false);
   
   const board = gameBoard;
+
   let box = document.querySelectorAll('.game > button');
   box.forEach(square => {
     square.addEventListener('click', (e)=>{
       let index = e.target.classList;
-      parseInt(index);
-      whoTurn = getTurn(player1, player2);
-      board[index] = whoTurn;
-      e.target.innerText = whoTurn;
+      index = +index; //change to number
+
+      let whoTurn = getTurn(player1, player2);
+      let changeBoard = placeTile(whoTurn, index);
+      if(changeBoard === true){
+        e.target.innerText = whoTurn;
+      }
+
     });
   })
 
@@ -45,6 +49,20 @@ const displayController = (() =>{
       player1.turn = true;
       player2.turn = false;
       return player2.tile;
+    }
+  }
+
+  function placeTile(tile, index){
+    if(tile === 'x' && board[index] === 0){
+      board[index] = 1;
+      return true;
+    }
+    else if(tile === 'o' && board[index] === 0){
+      board[index] = 2;
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
