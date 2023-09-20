@@ -4,8 +4,7 @@ const createPlayers = (name, tile, turn) =>{
 
 const gameBoard = (() =>{
   let container = document.querySelector('.game');
-  let array = []
-
+  let array = [];
   //Create the board and array
   for(let i = 0; i < 9; i++){
     let box = document.createElement('button');
@@ -13,6 +12,7 @@ const gameBoard = (() =>{
     array[i] = 0;
     container.appendChild(box);
   }
+
   return array;
 
 })();
@@ -23,6 +23,7 @@ const displayController = (() =>{
   const player2 = createPlayers('player2', 'o', false);
   
   const board = gameBoard;
+  displayInfo();
 
   let box = document.querySelectorAll('.game > button');
   box.forEach(square => {
@@ -30,7 +31,8 @@ const displayController = (() =>{
       let index = e.target.classList;
       index = +index; //change to number
 
-      let whoTurn = getTurn(player1, player2);
+      let whoTurn = getTurn();
+      displayInfo();
       let changeBoard = placeTile(whoTurn, index);
       if(changeBoard === true){
         e.target.innerText = whoTurn;
@@ -39,7 +41,7 @@ const displayController = (() =>{
     });
   })
 
-  function getTurn(player1, player2){
+  function getTurn(){
     if(player1.turn === true){
       player1.turn = false;
       player2.turn = true;
@@ -62,7 +64,17 @@ const displayController = (() =>{
       return true;
     }
     else{
-      return false;
+      return false; //tile has been placed return false
+    }
+  }
+
+  function displayInfo(){
+    let infoContainer = document.querySelector('.info');
+    if(player1.turn === false){
+      infoContainer.innerText = "Player 2's Turn";
+    }
+    else if(player2.turn === false){
+      infoContainer.innerText = "Player 1's Turn";
     }
   }
 
