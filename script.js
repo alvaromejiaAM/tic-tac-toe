@@ -21,9 +21,9 @@ const displayController = (() =>{
 
   const player1 = createPlayers('player1', 'x', true, false);
   const player2 = createPlayers('player2', 'o', false, false);
-  
   const board = gameBoard;
   let endGame = false;
+
   displayInfo();
 
   let box = document.querySelectorAll('.game > button');
@@ -31,14 +31,15 @@ const displayController = (() =>{
     square.addEventListener('click', (e)=>{
       let index = e.target.classList;
       index = +index; //change to number
-
       let whoTurn = getTurn(board[index]);
       displayInfo();
-      let changeBoard = placeTile(whoTurn, index);
-      if(changeBoard === true){
-        e.target.innerText = whoTurn;
+      if(!(whoTurn === false)){
+        let changeBoard = placeTile(whoTurn, index);
+        if(changeBoard === true){
+          e.target.innerText = whoTurn;
+        }
       }
-      
+      console.log(board);
     });
   })
 
@@ -89,9 +90,6 @@ const displayController = (() =>{
   }
 
   function winner(board) {
-    console.log(board[0]);
-    console.log(board[1]);
-    console.log(board[2]);
     const winCombos = [0,1,2];
 
     console.log(player1.win);
