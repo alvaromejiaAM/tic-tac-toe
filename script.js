@@ -1,4 +1,4 @@
-const createPlayers = (name, tile, turn) =>{
+const createPlayers = (name, tile, turn, win) =>{
   return {name, tile, turn}
   }
 
@@ -19,10 +19,11 @@ const gameBoard = (() =>{
 
 const displayController = (() =>{
 
-  const player1 = createPlayers('player1', 'x', true);
-  const player2 = createPlayers('player2', 'o', false);
+  const player1 = createPlayers('player1', 'x', true, false);
+  const player2 = createPlayers('player2', 'o', false, false);
   
   const board = gameBoard;
+  let endGame = false;
   displayInfo();
 
   let box = document.querySelectorAll('.game > button');
@@ -31,23 +32,23 @@ const displayController = (() =>{
       let index = e.target.classList;
       index = +index; //change to number
 
-      let whoTurn = getTurn();
+      let whoTurn = getTurn(board[index]);
       displayInfo();
       let changeBoard = placeTile(whoTurn, index);
       if(changeBoard === true){
         e.target.innerText = whoTurn;
       }
-
+      
     });
   })
 
-  function getTurn(){
-    if(player1.turn === true){
+  function getTurn(squarePos){
+    if(player1.turn === true && squarePos === 0 && endGame === false){
       player1.turn = false;
       player2.turn = true;
       return player1.tile;
     }
-    else{
+    else if(player2.turn === true && squarePos === 0 && endGame === false){
       player1.turn = true;
       player2.turn = false;
       return player2.tile;
@@ -57,10 +58,12 @@ const displayController = (() =>{
   function placeTile(tile, index){
     if(tile === 'x' && board[index] === 0){
       board[index] = 1;
+      winner(board);
       return true;
     }
     else if(tile === 'o' && board[index] === 0){
       board[index] = 2;
+      winner(board);
       return true;
     }
     else{
@@ -76,6 +79,28 @@ const displayController = (() =>{
     else if(player2.turn === false){
       infoContainer.innerText = "Player 1's Turn";
     }
+    if(player1.win){
+      infoContainer.innerText = 'Player1 Wins!';
+    }
+    if(player2.win){
+      infoContainer.innerText = 'Player2 Wins!';
+    }
+
   }
 
+  function winner(board) {
+    console.log(board[0]);
+    console.log(board[1]);
+    console.log(board[2]);
+    const winCombos = [0,1,2];
+
+    console.log(player1.win);
+    if(board[0] === 1 && board[1] === 1 && board[2] === 1){
+      endGame = true;
+      player1.win = true;
+      displayInfo();
+    }
+  }
+
+  
 })();
